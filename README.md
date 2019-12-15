@@ -1,2 +1,2 @@
-# Texas-Holdem
+# Texas Holdem
 Combination analyzers for Texas Holdem Poker.
