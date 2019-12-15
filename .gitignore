@@ -3,3 +3,9 @@ Poker.Core/obj/
 Poker/bin/
 Poker/obj/
 PokerTests/obj/
+PokerTests/bin/
+.vs/Poker/v15/.suo
+.vs/Poker/v15/Server/sqlite3/db.lock
+.vs/Poker/v15/Server/sqlite3/storage.ide-wal
+.vs/Poker/v15/Server/sqlite3/storage.ide
+.vs/Poker/v15/Server/sqlite3/storage.ide-shm
