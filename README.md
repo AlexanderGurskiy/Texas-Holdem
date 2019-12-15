@@ -10,4 +10,4 @@ Also app reads lines from the file (you can find sample file in the root).
 2) Publish the app. Sample command: "dotnet publish -c release --self-contained --runtime linux-x64 --framework netcoreapp2.2"
 3) Put input.txt in the root directory
 4) Run the application
-If you do not want to go through all these steps, let me know please. I can deploy app to the remote server.
+5) If you do not want to go through all these steps, let me know please. I can deploy app to the remote server.
