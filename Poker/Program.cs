@@ -1,10 +1,10 @@
 ﻿using Poker.Core.Analyzers;
 using Poker.Core.CardFactory;
-using Poker.Core.Domain;
 using Poker.Core.Store;
 using Poker.Core.Writer;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Poker
@@ -12,43 +12,46 @@ namespace Poker
     class Program
     {
         static void Main(string[] args)
-        {           
-            string input = "4cKs4h8s7s Ad4s Ac4d As9s KhKd 5d6d";
-            ICardRankStore cardRankStore = new CardRankStore();
-            ICardSuitStore cardSuitStore = new CardSuitStore();
-            PokerFactory holdemFactory = new HoldemFactory(cardRankStore, cardSuitStore);
-
-            var board = holdemFactory.CreateBoard(input);
-            var players = holdemFactory.CreatePlayers(input);
-
-            var comboAnalyzers = new List<IComboAnalyzer>()
+        {
+            var lines = File.ReadAllLines(Path.Combine(Directory.GetCurrentDirectory(), "input.txt"));
+            foreach (var line in lines)
             {
-                new FallbackAnalyzer(),
-                new PairAnalyzer(),
-                new TwoPairsAnalyzer(),
-                new ThreeOfKindAnalyzer(),
-                new StraightAnalyzer(),
-                new FlushAnalyzer(),
-                new FullHouseAnalyzer(),
-                new FourOfKindAnalyzer(),
-                new StraightFlushAnalyzer(),
-            }
-            .OrderByDescending(analyzer => analyzer.Weight)
-            .ToList();
+                ICardRankStore cardRankStore = new CardRankStore();
+                ICardSuitStore cardSuitStore = new CardSuitStore();
+                PokerFactory holdemFactory = new HoldemFactory(cardRankStore, cardSuitStore);
 
-            var playerComboAnalyzer = new PlayerComboAnalyzer(comboAnalyzers, board);
+                var board = holdemFactory.CreateBoard(line);
+                var players = holdemFactory.CreatePlayers(line);
 
-            foreach (var player in players)
-            {
-                playerComboAnalyzer.PatchPlayerCombo(player);
-            }
-
-            var sortedPlayers = players
-                .OrderBy(player => player.AnalyzedComboResult.ComboWeight)
+                var comboAnalyzers = new List<IComboAnalyzer>()
+                {
+                    new FallbackAnalyzer(),
+                    new PairAnalyzer(),
+                    new TwoPairsAnalyzer(),
+                    new ThreeOfKindAnalyzer(),
+                    new StraightAnalyzer(),
+                    new FlushAnalyzer(),
+                    new FullHouseAnalyzer(),
+                    new FourOfKindAnalyzer(),
+                    new StraightFlushAnalyzer(),
+                }
+                .OrderByDescending(analyzer => analyzer.Weight)
                 .ToList();
 
-            string output = new OutputWriter().Write(sortedPlayers);
-            Console.WriteLine(output);
+                var playerComboAnalyzer = new PlayerComboAnalyzer(comboAnalyzers, board);
+
+                foreach (var player in players)
+                {
+                    playerComboAnalyzer.PatchPlayerCombo(player);
+                }
+
+                var sortedPlayers = players
+                    .OrderBy(player => player.AnalyzedComboResult.ComboWeight)
+                    .ToList();
+
+                string output = new OutputWriter().Write(sortedPlayers);
+                Console.WriteLine(output);
+            }
             Console.ReadLine();
         }
     }
