@@ -1,4 +1,5 @@
-﻿using Poker.Core.Domain;
+﻿using Poker.Core.Analyzers.Result;
+using Poker.Core.Domain;
 using System.Collections.Generic;
 
 namespace Poker.Core.Analyzers

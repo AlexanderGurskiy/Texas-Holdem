@@ -11,14 +11,14 @@ namespace Poker.Core.Comparators
         {
             if (ReferenceEquals(x, y)) return true;
 
-            if (ReferenceEquals(x, null) || ReferenceEquals(y, null)) return false;
+            if (x is null || y is null) return false;
 
             return x.Rank == y.Rank && x.Suit == y.Suit;
         }
 
         public int GetHashCode(Card obj)
         {
-            if (ReferenceEquals(obj, null)) return 0;
+            if (obj is null) return 0;
 
             int hashCodeName = obj.Rank.GetHashCode();
             int hasCodeAge = obj.Suit.GetHashCode();

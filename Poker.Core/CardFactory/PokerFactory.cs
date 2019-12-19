@@ -17,7 +17,7 @@ namespace Poker.Core.CardFactory
         }
       
         public abstract IReadOnlyList<Card> CreateBoard(string input);
-        public abstract IReadOnlyList<Player> CreatePlayers(string input);
+        public abstract Player CreatePlayer(string input);
 
         protected virtual IReadOnlyList<Card> DecodeCards(string encodedInput)
         {           

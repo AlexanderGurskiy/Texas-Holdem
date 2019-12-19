@@ -1,7 +1,7 @@
-﻿using Poker.Core.Domain;
-using System;
+﻿using Poker.Core.Comparators;
+using Poker.Core.Domain;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace Poker.Core.Writer
 {
@@ -10,22 +10,29 @@ namespace Poker.Core.Writer
         public string Write(IReadOnlyList<Player> players)
         {
             string output = string.Empty;
-            for (int i = 0; i < players.Count; i++)
+            var equalsList = new List<string>();
+            string equalsDelimiter = "=";
+            string delimiter = " ";
+
+            output += players[0].EncodedHand;
+            for (int i = 1; i < players.Count; i++)
             {
-                string delimiter = string.Empty;
-                if (i > 0)
+                delimiter = " ";
+                if (players[i].AnalyzedComboResult.EqualsTo(players[i - 1].AnalyzedComboResult))
                 {
-                    delimiter = " ";
-                    var currentWeight = players[i].AnalyzedComboResult.ComboWeight;
-                    var prevWeight = players[i - 1].AnalyzedComboResult.ComboWeight;
-                    if (currentWeight == prevWeight)
-                    {
-                        delimiter = "=";
-                    }
+                    delimiter = "=";
                 }
                 output += $"{delimiter}{players[i].EncodedHand}";
             }
-            return output;
+
+            string sortedOutput = string.Empty;
+            foreach(var splited in output.Split(delimiter))
+            {
+                var sorted = splited.Split(equalsDelimiter).OrderBy(hand => hand);
+                sortedOutput += $"{delimiter}{string.Join(equalsDelimiter, sorted)}";
+            }
+
+            return sortedOutput.TrimStart();
         }
     }
 }

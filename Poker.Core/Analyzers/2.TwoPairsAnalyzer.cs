@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Poker.Core.Analyzers.Result;
 using Poker.Core.Domain;
 
 namespace Poker.Core.Analyzers

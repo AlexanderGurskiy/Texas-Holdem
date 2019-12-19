@@ -1,9 +1,7 @@
 ﻿using Poker.Core.Domain;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Poker.Core.Analyzers
+namespace Poker.Core.Analyzers.Result
 {
     public class AnalyzedComboResult
     {
@@ -15,9 +13,7 @@ namespace Poker.Core.Analyzers
             IsCombo = isCombo;
             Combo = combo;
             ComboWeight = comboWeight;
-        }
-        
-        
+        }        
 
         public static AnalyzedComboResult DefaultResult
         {
@@ -30,6 +26,6 @@ namespace Poker.Core.Analyzers
         public static AnalyzedComboResult FromCombo(IReadOnlyList<Card> combo, ComboWeight comboWeight)
         {
             return new AnalyzedComboResult(true, combo, comboWeight);
-        }
-    }
+        }       
+    }    
 }

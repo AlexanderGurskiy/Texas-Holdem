@@ -1,4 +1,5 @@
 ﻿using Poker.Core.Analyzers;
+using Poker.Core.Analyzers.Result;
 using System.Collections.Generic;
 using System.Linq;
 
