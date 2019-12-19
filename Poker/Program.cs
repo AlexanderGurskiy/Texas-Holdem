@@ -51,8 +51,7 @@ namespace Poker
 
                 string output = new OutputWriter().Write(sortedPlayers);
                 Console.WriteLine(output);
-            }
-            Console.ReadLine();
+            }           
         }
     }
 }

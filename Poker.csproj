@@ -3,7 +3,8 @@
   <PropertyGroup>
 	<EnableDefaultCompileItems>False</EnableDefaultCompileItems>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <StartupObject>Poker.Program</StartupObject>
   </PropertyGroup>
   
   <ItemGroup>
