@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<EnableDefaultCompileItems>False</EnableDefaultCompileItems>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+  
+  <ItemGroup>
+	<Compile Include="Poker\Program.cs" Link="Program.cs" />
+ </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="Poker.Core\Poker.Core.csproj" />
+  </ItemGroup>
+
+</Project>

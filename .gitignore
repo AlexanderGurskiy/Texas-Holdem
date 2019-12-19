@@ -9,3 +9,6 @@ PokerTests/bin/
 .vs/Poker/v15/Server/sqlite3/storage.ide-wal
 .vs/Poker/v15/Server/sqlite3/storage.ide
 .vs/Poker/v15/Server/sqlite3/storage.ide-shm
+bin/Debug/
+obj/
+.vs/Poker/DesignTimeBuild/.dtbcache
