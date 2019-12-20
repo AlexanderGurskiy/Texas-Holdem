@@ -65,7 +65,7 @@ namespace PokerTests
         [TestMethod]
         public void Is_Not_TwoPairsCombo_Test()
         {
-            var pairComboAnalyzer = new PairAnalyzer();
+            var pairComboAnalyzer = new TwoPairsAnalyzer();
             var cards = new List<Card>()
             {
                 new Card(CardRank.Four, CardSuit.Club),

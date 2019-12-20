@@ -13,8 +13,7 @@ namespace Poker
     class Program
     {
         static void Main(string[] args)
-        {            
-            
+        {
             ICardRankStore cardRankStore = new CardRankStore();
             ICardSuitStore cardSuitStore = new CardSuitStore();
             PokerFactory holdemFactory = new HoldemFactory(cardRankStore, cardSuitStore);
