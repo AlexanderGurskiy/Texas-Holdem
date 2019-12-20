@@ -1,8 +1,7 @@
 {
   "profiles": {
     "Poker": {
-      "commandName": "Project",
-      "commandLineArgs": "4cKs4h8s7s Ad4s Ac4d As9s KhKd 5d6d AsAs AdAd"
+      "commandName": "Project"
     }
   }
 }

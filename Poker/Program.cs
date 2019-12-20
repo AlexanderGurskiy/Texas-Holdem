@@ -2,6 +2,7 @@
 using Poker.Core.CardFactory;
 using Poker.Core.Comparators;
 using Poker.Core.Domain;
+using Poker.Core.Reader;
 using Poker.Core.Store;
 using Poker.Core.Writer;
 using System;
@@ -12,49 +13,60 @@ namespace Poker
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            ICardRankStore cardRankStore = new CardRankStore();
-            ICardSuitStore cardSuitStore = new CardSuitStore();
-            PokerFactory holdemFactory = new HoldemFactory(cardRankStore, cardSuitStore);
-
-            var board = holdemFactory.CreateBoard(args.First());
-
-            var players = new List<Player>();
-
-            foreach (var arg in args.Skip(1))
+            if (!Console.IsInputRedirected)
             {
-                var player = holdemFactory.CreatePlayer(arg);
-                players.Add(player);
+                Console.WriteLine("File input is required");
+                return;
             }
-            var comboAnalyzers = new List<IComboAnalyzer>()
+            
+            string line = string.Empty;        
+            while((line = Console.ReadLine()) != null)
             {
-                new FallbackAnalyzer(),
-                new PairAnalyzer(),
-                new TwoPairsAnalyzer(),
-                new ThreeOfKindAnalyzer(),
-                new StraightAnalyzer(),
-                new FlushAnalyzer(),
-                new FullHouseAnalyzer(),
-                new FourOfKindAnalyzer(),
-                new StraightFlushAnalyzer(),
+                ICardRankStore cardRankStore = new CardRankStore();
+                ICardSuitStore cardSuitStore = new CardSuitStore();
+                PokerFactory holdemFactory = new HoldemFactory(cardRankStore, cardSuitStore);
+               
+                var board = holdemFactory.CreateBoard(line.Substring(0, 10));
+
+                var players = new List<Player>();
+                var reader = new Reader(line, 10);
+                while (reader.Read())
+                {
+                    var encoded = reader.GetEncodedCards();
+                    var player = holdemFactory.CreatePlayer(encoded);
+                    players.Add(player);
+                }
+                
+                var comboAnalyzers = new List<IComboAnalyzer>()
+                {
+                    new FallbackAnalyzer(),
+                    new PairAnalyzer(),
+                    new TwoPairsAnalyzer(),
+                    new ThreeOfKindAnalyzer(),
+                    new StraightAnalyzer(),
+                    new FlushAnalyzer(),
+                    new FullHouseAnalyzer(),
+                    new FourOfKindAnalyzer(),
+                    new StraightFlushAnalyzer(),
+                }
+                .OrderByDescending(analyzer => analyzer.Weight)
+                .ToList();
+
+                var playerComboAnalyzer = new PlayerComboAnalyzer(comboAnalyzers, board);
+
+                foreach (var player in players)
+                {
+                    playerComboAnalyzer.PatchPlayerCombo(player);
+                }
+
+                players.Sort(new PlayerComboComparer());
+
+
+                string output = new OutputWriter().Write(players);
+                Console.WriteLine(output);
             }
-            .OrderByDescending(analyzer => analyzer.Weight)
-            .ToList();
-
-            var playerComboAnalyzer = new PlayerComboAnalyzer(comboAnalyzers, board);
-
-            foreach (var player in players)
-            {
-                playerComboAnalyzer.PatchPlayerCombo(player);
-            }
-
-            players.Sort(new PlayerComboComparer());
-
-
-            string output = new OutputWriter().Write(players);
-            Console.WriteLine(output);
-
         }
     }
 }
