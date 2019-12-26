@@ -24,7 +24,7 @@ namespace PokerTests
                 new Card(CardRank.Ten, CardSuit.Spade)
             };
             var result = pairComboAnalyzer.Analyze(cards);
-            Assert.IsTrue(result.IsCombo);
+            Assert.IsTrue(result != null);
         }
 
         [TestMethod]
@@ -43,7 +43,7 @@ namespace PokerTests
                 new Card(CardRank.Ten, CardSuit.Spade)
             };
             var result = pairComboAnalyzer.Analyze(cards);
-            Assert.IsFalse(result.IsCombo);
+            Assert.IsFalse(result != null);
         }
 
         [TestMethod]
@@ -62,7 +62,7 @@ namespace PokerTests
                 new Card(CardRank.Ace, CardSuit.Spade)
             };
             var result = pairComboAnalyzer.Analyze(cards);
-            Assert.IsTrue(result.IsCombo);
+            Assert.IsTrue(result != null);
         }
     }
 }

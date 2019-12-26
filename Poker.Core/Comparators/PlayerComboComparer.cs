@@ -7,11 +7,11 @@ namespace Poker.Core.Comparators
     {
         public int Compare(Player x, Player y)
         {
-            if (x.AnalyzedComboResult.GreaterThen(y.AnalyzedComboResult))
+            if (x.Combo.GreaterThen(y.Combo))
             {
                 return 1;
             }
-            else if (x.AnalyzedComboResult.LessThen(y.AnalyzedComboResult))
+            else if (x.Combo.LessThen(y.Combo))
             {
                 return -1;
             }

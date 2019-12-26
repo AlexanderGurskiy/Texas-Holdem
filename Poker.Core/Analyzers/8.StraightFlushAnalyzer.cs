@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Poker.Core.Analyzers.Result;
+using Poker.Core.Combinations;
 using Poker.Core.Domain;
 
 namespace Poker.Core.Analyzers
@@ -12,15 +12,16 @@ namespace Poker.Core.Analyzers
         {
             _flushAnalyzer = new FlushAnalyzer();
         }
-        public ComboWeight Weight => ComboWeight.StraightFlush;
 
-        public AnalyzedComboResult Analyze(IReadOnlyList<Card> cards)
+        public ICombo Analyze(IReadOnlyList<Card> cards)
         {
             var result = _flushAnalyzer.Analyze(cards);
 
-            if (result.IsCombo)
+           
+            if (result != null)
             {
-                var ranks = result.Combo.Select(card => card.Rank).ToList();
+                var flushCombo = (result as FlushCombo).ComboCards;
+                var ranks = flushCombo.Select(card => card.Rank).ToList();
                 if (ranks.IndexOf(CardRank.Ace) != -1
                     && ranks.IndexOf(CardRank.King) != -1
                     && ranks.IndexOf(CardRank.Queen) != -1
@@ -28,10 +29,10 @@ namespace Poker.Core.Analyzers
                     && ranks.IndexOf(CardRank.Ten) != -1
                     )
                 {
-                    return AnalyzedComboResult.FromCombo(result.Combo, Weight);
+                    return new StraightFlushCombo();
                 }
             }
-            return AnalyzedComboResult.DefaultResult;
+            return null;
         }
     }
 }

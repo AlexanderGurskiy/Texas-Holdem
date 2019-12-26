@@ -15,19 +15,13 @@ namespace Poker
     {
         static void Main()
         {
-            if (!Console.IsInputRedirected)
-            {
-                Console.WriteLine("File input is required");
-                return;
-            }
-            
-            string line = string.Empty;        
-            while((line = Console.ReadLine()) != null)
+            string line;
+            while ((line = Console.ReadLine()) != null)
             {
                 ICardRankStore cardRankStore = new CardRankStore();
                 ICardSuitStore cardSuitStore = new CardSuitStore();
                 PokerFactory holdemFactory = new HoldemFactory(cardRankStore, cardSuitStore);
-               
+
                 var board = holdemFactory.CreateBoard(line.Substring(0, 10));
 
                 var players = new List<Player>();
@@ -38,21 +32,20 @@ namespace Poker
                     var player = holdemFactory.CreatePlayer(encoded);
                     players.Add(player);
                 }
-                
+
                 var comboAnalyzers = new List<IComboAnalyzer>()
                 {
-                    new FallbackAnalyzer(),
-                    new PairAnalyzer(),
-                    new TwoPairsAnalyzer(),
-                    new ThreeOfKindAnalyzer(),
-                    new StraightAnalyzer(),
-                    new FlushAnalyzer(),
-                    new FullHouseAnalyzer(),
-                    new FourOfKindAnalyzer(),
                     new StraightFlushAnalyzer(),
-                }
-                .OrderByDescending(analyzer => analyzer.Weight)
-                .ToList();
+                    new FourOfKindAnalyzer(),
+                    new FullHouseAnalyzer(),
+                    new FlushAnalyzer(),
+                    new StraightAnalyzer(),
+                    new ThreeOfKindAnalyzer(),
+                    new TwoPairsAnalyzer(),
+                    new PairAnalyzer(),
+                    new FallbackAnalyzer(),
+                };
+
 
                 var playerComboAnalyzer = new PlayerComboAnalyzer(comboAnalyzers, board);
 

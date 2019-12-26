@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Poker.Core.Analyzers.Result;
+using Poker.Core.Combinations;
 using Poker.Core.Domain;
 
 namespace Poker.Core.Analyzers
 {
     public class TwoPairsAnalyzer : IComboAnalyzer
     {
-        public ComboWeight Weight => ComboWeight.TwoPairs;
-
-        public AnalyzedComboResult Analyze(IReadOnlyList<Card> cards)
+        public ICombo Analyze(IReadOnlyList<Card> cards)
         {
             var groups = cards.GroupBy(card => card.Rank).Where(group => group.Count() == 2);
             if (groups.Count() >= 2)
@@ -18,10 +15,17 @@ namespace Poker.Core.Analyzers
                 var combo = groups.OrderByDescending(group => group.Key)
                     .Take(2)
                     .SelectMany(card => card)
+                    .ToList();               
+                var kickers = cards
+                    .Where(
+                        card => !combo.Any(comboCard => card.Rank == comboCard.Rank && card.Suit == comboCard.Suit)
+                    )
+                    .OrderByDescending(card => card.Rank)
+                    .Take(1)
                     .ToList();
-                return AnalyzedComboResult.FromCombo(combo, Weight);
+                return new TwoPairsCombo(combo, kickers);               
             }
-            return AnalyzedComboResult.DefaultResult;
+            return null;
         }
     }
 }

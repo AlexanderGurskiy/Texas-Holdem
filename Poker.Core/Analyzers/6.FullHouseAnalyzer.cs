@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Poker.Core.Analyzers.Result;
+using Poker.Core.Combinations;
 using Poker.Core.Domain;
 
 namespace Poker.Core.Analyzers
@@ -14,12 +12,11 @@ namespace Poker.Core.Analyzers
         {
             _threeOfKindAnalyzer = new ThreeOfKindAnalyzer();
         }
-        public ComboWeight Weight => ComboWeight.FullHouse;
 
-        public AnalyzedComboResult Analyze(IReadOnlyList<Card> cards)
+        public ICombo Analyze(IReadOnlyList<Card> cards)
         {
-            var threeOfKindResult = _threeOfKindAnalyzer.Analyze(cards);
-            if (threeOfKindResult.IsCombo)
+            var threeOfKindCombo = _threeOfKindAnalyzer.Analyze(cards);
+            if (threeOfKindCombo != null)
             {
                 var pairsGroups = cards.GroupBy(card => card.Rank).Where(group => group.Count() == 2);
                 if (pairsGroups.Count() >= 1)
@@ -28,11 +25,12 @@ namespace Poker.Core.Analyzers
                         .OrderByDescending(group => group.Key)
                         .First()
                         .ToList();
-                    var resultCombo = threeOfKindResult.Combo.Concat(combo).ToList();
-                    return AnalyzedComboResult.FromCombo(resultCombo, Weight);
+                    var resultCombo = (threeOfKindCombo as ThreeOfKindCombo).ComboCards.Concat(combo).ToList();
+
+                    return new FullHouseCombo(resultCombo);
                 }
             }
-            return AnalyzedComboResult.DefaultResult;
+            return null;
 
         }
     }

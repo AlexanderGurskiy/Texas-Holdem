@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Poker.Core.Analyzers;
+using Poker.Core.Combinations;
 using Poker.Core.Comparators;
 using Poker.Core.Domain;
 using System;
@@ -28,7 +29,7 @@ namespace PokerTests
                 new Card(CardRank.King, CardSuit.Diamond)
             };
             var result = pairComboAnalyzer.Analyze(cards);
-            Assert.IsTrue(result.IsCombo);
+            Assert.IsTrue(result != null);
         }
 
         [TestMethod]
@@ -56,7 +57,7 @@ namespace PokerTests
                 new Card(CardRank.Jack, CardSuit.Diamond),
                 new Card(CardRank.Ten, CardSuit.Diamond)
             };
-            Assert.IsTrue(expected.SequenceEqual(result.Combo.ToList(), new CardEqualityComparer()));
+            Assert.IsTrue(expected.SequenceEqual((result as StraightCombo).ComboCards.ToList(), new CardEqualityComparer()));
         }
 
         [TestMethod]
@@ -75,7 +76,7 @@ namespace PokerTests
                 new Card(CardRank.King, CardSuit.Diamond)
             };
             var result = pairComboAnalyzer.Analyze(cards);
-            Assert.IsFalse(result.IsCombo);
+            Assert.IsFalse(result != null);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Poker.Core.Writer
             for (int i = 1; i < players.Count; i++)
             {
                 delimiter = " ";
-                if (players[i].AnalyzedComboResult.EqualsTo(players[i - 1].AnalyzedComboResult))
+                if (players[i].Combo.EqualsTo(players[i - 1].Combo))
                 {
                     delimiter = "=";
                 }

@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Poker.Core.Analyzers.Result;
+using Poker.Core.Combinations;
 using Poker.Core.Domain;
 
 namespace Poker.Core.Analyzers
 {
     public class StraightAnalyzer : IComboAnalyzer
     {
-        public ComboWeight Weight => ComboWeight.Straight;
-
-        public AnalyzedComboResult Analyze(IReadOnlyList<Card> cards)
+        public ICombo Analyze(IReadOnlyList<Card> cards)
         {
             var sortedCards = cards.OrderBy(card => card.Rank).ToList();
             int index = sortedCards.Count() - 1;
@@ -35,10 +31,10 @@ namespace Poker.Core.Analyzers
 
             if (combo.Count == 5)
             {
-                return AnalyzedComboResult.FromCombo(combo, Weight);
+                return new StraightCombo(combo);
             }
 
-            return AnalyzedComboResult.DefaultResult;
+            return null;
         }
 
         private bool IsLowestStraight(IReadOnlyList<Card> cards)

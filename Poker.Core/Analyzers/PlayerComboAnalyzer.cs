@@ -22,7 +22,7 @@ namespace Poker.Core.Analyzers
             {
                 var cards = player.Hand.Concat(_board).ToList();
                 var result = analyzer.Analyze(cards);
-                if (result.IsCombo)
+                if (result != null)
                 {
                     player.PatchCombo(result);
                     break;

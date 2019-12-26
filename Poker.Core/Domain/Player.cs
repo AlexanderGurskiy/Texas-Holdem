@@ -1,5 +1,4 @@
-﻿using Poker.Core.Analyzers;
-using Poker.Core.Analyzers.Result;
+﻿using Poker.Core.Combinations;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,7 +11,6 @@ namespace Poker.Core.Domain
             Hand = hand;       
         }
 
-        private AnalyzedComboResult _analyzedComboResult;
         public IReadOnlyList<Card> Hand { get; private set; }
         
         public string EncodedHand
@@ -23,17 +21,11 @@ namespace Poker.Core.Domain
             }
         }
 
-        public void PatchCombo(AnalyzedComboResult analyzedComboResult)
+        public void PatchCombo(ICombo combo)
         {
-            _analyzedComboResult = analyzedComboResult;
+            Combo = combo;
         }
 
-        public AnalyzedComboResult AnalyzedComboResult
-        {
-            get
-            {
-                return _analyzedComboResult ?? AnalyzedComboResult.DefaultResult;
-            }
-        }
+        public ICombo Combo { get; private set; }
     }
 }

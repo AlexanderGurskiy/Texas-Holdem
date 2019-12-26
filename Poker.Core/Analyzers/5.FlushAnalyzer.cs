@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Poker.Core.Analyzers.Result;
+using Poker.Core.Combinations;
 using Poker.Core.Domain;
 
 namespace Poker.Core.Analyzers
 {
     public class FlushAnalyzer : IComboAnalyzer
     {
-        public ComboWeight Weight => ComboWeight.Flush;
-
-        public AnalyzedComboResult Analyze(IReadOnlyList<Card> cards)
+        public ICombo Analyze(IReadOnlyList<Card> cards)
         {
             var groups = cards.GroupBy(card => card.Suit).Where(group => group.Count() >= 5);
             if (groups.Count() == 1)
             {
-                var combo = groups.First().OrderByDescending(card => (int)card.Rank).Take(5).ToList();
-                return AnalyzedComboResult.FromCombo(combo, Weight);
+                var combo = groups.First().OrderByDescending(card => card.Rank).Take(5).ToList();
+                return new FlushCombo(combo);
             }
-            return AnalyzedComboResult.DefaultResult;
+            return null;
         }       
     }
 }
