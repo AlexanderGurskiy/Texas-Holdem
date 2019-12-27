@@ -19,7 +19,7 @@ namespace Poker.Core.Combinations
         {
             if (!base.EqualsTo(combo)) return false;
 
-            return ComboCards.Max(card => card.Rank) == (combo as StraightCombo).ComboCards.Max(card => card.Rank);
+            return ComboCards.Max(card => card.Rank) == (combo as FlushCombo).ComboCards.Max(card => card.Rank);
         }
 
         public override bool GreaterThen(ICombo combo)
@@ -27,7 +27,7 @@ namespace Poker.Core.Combinations
             if (base.GreaterThen(combo)) return true;
             if (base.LessThen(combo)) return false;
 
-            return ComboCards.Max(card => card.Rank) > (combo as StraightCombo).ComboCards.Max(card => card.Rank);
+            return ComboCards.Max(card => card.Rank) > (combo as FlushCombo).ComboCards.Max(card => card.Rank);
         }
 
         public override bool LessThen(ICombo combo)
